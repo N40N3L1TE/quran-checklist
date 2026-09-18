@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://n40n3l1te.github.io/quran-checklist/">
+  <meta property="og:url" content="https://n40n3l1te.github.io/quran-checklist/">
+  <title>Quran Checklist</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7f5;
+      color: #18352a;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px 50px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2.2rem;
+    }
+    header p {
+      margin: 0;
+      color: #5d6f66;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.07);
+    }
+    .website-card {
+      text-align: center;
+    }
+    .website-card h2 {
+      margin-top: 0;
+    }
+    .website-button {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 11px 18px;
+      border-radius: 10px;
+      background: #18352a;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .website-button:hover {
+      opacity: .9;
+    }
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .progress-count {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #e2e9e5;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: #3d8064;
+      transition: width .2s ease;
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: 9px 13px;
+      cursor: pointer;
+      background: #e8efeb;
+      color: #18352a;
+      font-weight: 600;
+    }
+    button:hover {
+      background: #dbe6df;
+    }
+    .section-toggle {
+      width: 100%;
+      text-align: left;
+      font-size: 1.05rem;
+      background: #f0f5f2;
+      margin-bottom: 10px;
+    }
+    .checklist {
+      display: none;
+      gap: 8px;
+    }
+    .checklist.open {
+      display: grid;
+    }
+    label.item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid #e1e8e4;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #fff;
+    }
+    label.item:hover {
+      background: #f7faf8;
+    }
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #3d8064;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+    .item-number {
+      font-weight: bold;
+      min-width: 34px;
+    }
+    @media (max-width: 600px) {
+      .container { padding: 18px 10px 40px; }
+      h1 { font-size: 1.8rem; }
+      .card { padding: 16px; }
+      .progress-row { align-items: flex-start; flex-direction: column; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>☪ Quran Checklist</h1>
+      <p>Track your Juz and Surah progress</p>
+    </header>
+
+    <section class="card website-card">
+      <h2>📖 Read the Quran</h2>
+      <p>Visit Parahz.com to read and study the Quran.</p>
+      <a class="website-button" href="https://parahz.com" target="_blank" rel="noopener noreferrer">
+        Open Parahz.com ↗
+      </a>
+    </section>
+
+    <section class="card">
+      <div class="progress-row">
+        <h2>Juz Progress</h2>
+        <span class="progress-count" id="juzCount">0 / 30</span>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="juzProgress"></div>
+      </div>
+
+      <div class="buttons">
+        <button type="button" onclick="checkAllJuz()">Check All Juz</button>
+        <button type="button" onclick="resetJuz()">Reset Juz</button>
+      </div>
+
+      <button class="section-toggle" type="button" onclick="toggleSection('juzList', this)">
+        ▶ Show Juz Checklist
+      </button>
+
+      <div class="checklist" id="juzList"></div>
+    </section>
+
+    <section class="card">
+      <div class="progress-row">
+        <h2>Surah Progress</h2>
+        <span class="progress-count" id="surahCount">0 / 114</span>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="surahProgress"></div>
+      </div>
+
+      <div class="buttons">
+        <button type="button" onclick="checkAllSurahs()">Check All Surahs</button>
+        <button type="button" onclick="resetSurahs()">Reset Surahs</button>
+      </div>
+
+      <button class="section-toggle" type="button" onclick="toggleSection('surahList', this)">
+        ▶ Show Surah Checklist
+      </button>
+
+      <div class="checklist" id="surahList"></div>
+    </section>
+  </div>
+
+  <script>
+    const surahs = [
+      "Al-Fatihah", "Al-Baqarah", "Aal-Imran", "An-Nisa", "Al-Ma'idah",
+      "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Tawbah", "Yunus",
+      "Hud", "Yusuf", "Ar-Ra'd", "Ibrahim", "Al-Hijr",
+      "An-Nahl", "Al-Isra", "Al-Kahf", "Maryam", "Ta-Ha",
+      "Al-Anbiya", "Al-Hajj", "Al-Mu'minun", "An-Nur", "Al-Furqan",
+      "Ash-Shu'ara", "An-Naml", "Al-Qasas", "Al-Ankabut", "Ar-Rum",
+      "Luqman", "As-Sajdah", "Al-Ahzab", "Saba", "Fatir",
+      "Ya-Sin", "As-Saffat", "Sad", "Az-Zumar", "Ghafir",
+      "Fussilat", "Ash-Shura", "Az-Zukhruf", "Ad-Dukhan", "Al-Jathiyah",
+      "Al-Ahqaf", "Muhammad", "Al-Fath", "Al-Hujurat", "Qaf",
+      "Adh-Dhariyat", "At-Tur", "An-Najm", "Al-Qamar", "Ar-Rahman",
+      "Al-Waqi'ah", "Al-Hadid", "Al-Mujadilah", "Al-Hashr", "Al-Mumtahanah",
+      "As-Saff", "Al-Jumu'ah", "Al-Munafiqun", "At-Taghabun", "At-Talaq",
+      "At-Tahrim", "Al-Mulk", "Al-Qalam", "Al-Haqqah", "Al-Ma'arij",
+      "Nuh", "Al-Jinn", "Al-Muzzammil", "Al-Muddaththir", "Al-Qiyamah",
+      "Al-Insan", "Al-Mursalat", "An-Naba", "An-Nazi'at", "Abasa",
+      "At-Takwir", "Al-Infitar", "Al-Mutaffifin", "Al-Inshiqaq", "Al-Buruj",
+      "At-Tariq", "Al-A'la", "Al-Ghashiyah", "Al-Fajr", "Al-Balad",
+      "Ash-Shams", "Al-Layl", "Ad-Duha", "Ash-Sharh", "At-Tin",
+      "Al-Alaq", "Al-Qadr", "Al-Bayyinah", "Az-Zalzalah", "Al-Adiyat",
+      "Al-Qari'ah", "At-Takathur", "Al-Asr", "Al-Humazah", "Al-Fil",
+      "Quraysh", "Al-Ma'un", "Al-Kawthar", "Al-Kafirun", "An-Nasr",
+      "Al-Masad", "Al-Ikhlas", "Al-Falaq", "An-Nas"
+    ];
+
+    const juzList = document.getElementById("juzList");
+    const surahList = document.getElementById("surahList");
+
+    function createChecklist(container, items, prefix, storageKey, labelPrefix) {
+      items.forEach((name, index) => {
+        const number = index + 1;
+        const label = document.createElement("label");
+        label.className = "item";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = `${prefix}-${number}`;
+        checkbox.addEventListener("change", () => {
+          saveProgress(prefix, storageKey, items.length);
+        });
+
+        const numberSpan = document.createElement("span");
+        numberSpan.className = "item-number";
+        numberSpan.textContent = `${number}.`;
+
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = labelPrefix ? `${labelPrefix} ${name}` : name;
+
+        label.appendChild(checkbox);
+        label.appendChild(numberSpan);
+        label.appendChild(nameSpan);
+        container.appendChild(label);
+      });
+    }
+
+    function toggleSection(id, button) {
+      const section = document.getElementById(id);
+      section.classList.toggle("open");
+      button.textContent = section.classList.contains("open")
+        ? button.textContent.replace("▶ Show", "▼ Hide")
+        : button.textContent.replace("▼ Hide", "▶ Show");
+    }
+
+    function saveProgress(prefix, storageKey, total) {
+      const checked = [];
+      for (let i = 1; i <= total; i++) {
+        if (document.getElementById(`${prefix}-${i}`).checked) {
+          checked.push(i);
+        }
+      }
+      localStorage.setItem(storageKey, JSON.stringify(checked));
+      updateProgress(prefix, total);
+    }
+
+    function loadProgress(prefix, storageKey, total) {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
+      saved.forEach(number => {
+        const checkbox = document.getElementById(`${prefix}-${number}`);
+        if (checkbox) checkbox.checked = true;
+      });
+      updateProgress(prefix, total);
+    }
+
+    function updateProgress(prefix, total) {
+      let completed = 0;
+      for (let i = 1; i <= total; i++) {
+        if (document.getElementById(`${prefix}-${i}`).checked) {
+          completed++;
+        }
+      }
+
+      const percentage = total ? (completed / total) * 100 : 0;
+
+      if (prefix === "juz") {
+        document.getElementById("juzCount").textContent = `${completed} / ${total}`;
+        document.getElementById("juzProgress").style.width = `${percentage}%`;
+      } else {
+        document.getElementById("surahCount").textContent = `${completed} / ${total}`;
+        document.getElementById("surahProgress").style.width = `${percentage}%`;
+      }
+    }
+
+    function checkAllJuz() {
+      for (let i = 1; i <= 30; i++) {
+        document.getElementById(`juz-${i}`).checked = true;
+      }
+      saveProgress("juz", "quranJuzProgress", 30);
+    }
+
+    function resetJuz() {
+      for (let i = 1; i <= 30; i++) {
+        document.getElementById(`juz-${i}`).checked = false;
+      }
+      saveProgress("juz", "quranJuzProgress", 30);
+    }
+
+    function checkAllSurahs() {
+      for (let i = 1; i <= 114; i++) {
+        document.getElementById(`surah-${i}`).checked = true;
+      }
+      saveProgress("surah", "quranSurahProgress", 114);
+    }
+
+    function resetSurahs() {
+      for (let i = 1; i <= 114; i++) {
+        document.getElementById(`surah-${i}`).checked = false;
+      }
+      saveProgress("surah", "quranSurahProgress", 114);
+    }
+
+    createChecklist(
+      juzList,
+      Array.from({ length: 30 }, (_, i) => `Juz ${i + 1}`),
+      "juz",
+      "quranJuzProgress",
+      ""
+    );
+
+    createChecklist(
+      surahList,
+      surahs,
+      "surah",
+      "quranSurahProgress",
+      ""
+    );
+
+    loadProgress("juz", "quranJuzProgress", 30);
+    loadProgress("surah", "quranSurahProgress", 114);
+  </script>
+</body>
+</html>
